@@ -1,0 +1,62 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ application }}</h1>
+
+  <p><strong>Units:</strong> {{ application.units }} </a></p>
+  <p><strong>Status:</strong> {{ application.status }} </a></p>
+  {% if application.remarks != "" %}
+     <p><strong>Remarks:</strong> {{ application.remarks }} </a></p>
+  {% endif %}
+  {% if application.previous_application != None %}
+     <p><strong>Previous Application:</strong> <a href="{{ application.previous_application.get_absolute_url }}">{{ application.previous_application }} </a></p>
+  {% endif %}
+  
+  {% if projects %}  
+    <div style="margin-left:20px;margin-top:20px">
+    
+      <h4>Associated Projects</h4>
+
+        {% for proj in projects %}
+        <hr>
+          <h3><a href="{{ proj.get_absolute_url }}"><strong>{{ proj.title }}</strong></a></h3>
+          <p><strong>Original Name: </strong>{{ proj.original_name }}</p>
+          <p><strong>Date Started: </strong>{{ proj.date_started }}</p>
+          <p><strong>Date Completed: </strong>
+            {% if proj.date_completed == None %}
+              In Progress
+            {% else %}
+              {{ proj.date_completed }}
+            {% endif %}
+          </p>
+          <p><strong>Members: </strong>{{ proj.authors.all|join:", " }}</p>
+        {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if user.get_access_level == 'Approving Body' %}
+    <li><a href="{% url 'evaluate' application.id %}" >Evaluate</a></li>
+  
+  {% elif extend == True and application.status == "APPROVED"  %}
+    <li><a href="{% url 'extend-application' application.id %}">Apply for Extension</a></li>
+  
+  {% elif application.status == "DRAFT" or application.status == "FOR REVISION" %}
+    <li><a href="{% url 'edit-application' application.id %}" >Edit Application</a> </li>
+    <li><a href="{% url 'create-project' %}" >Add Project</a></li>
+    {% if application.status == "DRAFT" %}
+      <li><a href="{% url 'delete-application' application.id %}">Delete Application</li>
+    {% endif %}
+    <form action="{{ rlc.get_absolute_url }}" method="POST" class="submit-btn">
+      {% csrf_token %}
+      <input type="Submit" value="Submit">
+    </form>
+  
+  {% elif application.status == "PENDING COLLEGE APPROVAL" or application.status == "PENDING DEPARTMENT APPROVAL" %}
+    <form action="{{ rlc.get_absolute_url }}" method="POST" class="submit-btn">
+      {% csrf_token %}
+      <input type="Submit" value="Cancel Submission">
+    </form>
+  
+  {% endif %}  
+  
+{% endblock %}

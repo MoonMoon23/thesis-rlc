@@ -1,0 +1,93 @@
+{% extends "base_generic.html" %}
+
+{% load widget_tweaks %}
+{% load templatehelpers %}
+
+{% block content %}
+  {% if user.get_access_level == 'Administrator' %}
+    <h1 class=head>Application List</h1>
+      <form method="get">
+        <div class="filter">
+          <h4 style="margin-top: 0">Filter</h4>
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.applicant.label_tag }}
+              {% render_field filter.form.applicant class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.semester_applicable.label_tag }}
+              {% render_field filter.form.semester_applicable class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.schoolyear.label_tag }}
+              {% render_field filter.form.schoolyear class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-6">
+              {{ filter.form.status.label_tag }}
+              {% render_field filter.form.status class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.associated_department.label_tag }}
+              {% render_field filter.form.associated_department class="form-control" %}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Search
+          </button>
+        </div>
+      </form>
+    <div class = tbl>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Applicant</th>
+            <th>Units</th>
+            <th>Semester</th>
+            <th>Schoolyear</th>
+            <th>Status</th>
+            <th>Department</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in page %}
+            <tr>
+              <td><a href="{{ app.get_absolute_url }}"> {{ app.applicant }}</a></td>
+              <td>{{ app.units }}</td>
+              <td>{{ app.semester_applicable }}</td>
+              <td>{{ app.schoolyear }}</td>
+              <td>{{ app.status }}</td>
+              <td>{{ app.associated_department }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5">No Entries.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <span class="step-links">
+          {% if page.has_previous %}
+              <a href="{% helpers 1 'page' request.GET.urlencode %}">&laquo; first</a>
+              <a href="{% helpers page.previous_page_number 'page' request.GET.urlencode %}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ page.number }} of {{ page.paginator.num_pages }}.
+          </span>
+
+          {% if page.has_next %}
+              <a href="{% helpers page.next_page_number 'page' request.GET.urlencode %}">next</a>
+              <a href="{% helpers page.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
+          {% endif %}
+      </span>
+    </div>
+    <form method='POST'>
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Generate Statistics Report</button>
+    </form>
+  {% else %}
+    <p><strong>You don't have access to this page</strong></p>
+  {% endif %}
+{% endblock %}

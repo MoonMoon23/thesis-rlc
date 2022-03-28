@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ faculty.first_name }} {{faculty.middle_name }} {{faculty.last_name}}</h1>
+  <p><strong>Faculty ID:</strong>{{ faculty.faculty_id }}</p>
+  <p><strong>Designation:</strong>{{ faculty.designation }} {{ faculty.rank }}</p>
+  <p><strong>Email Address:</strong> {{ faculty.email }}</p>
+  <p><strong>Department:</strong> {{ faculty.department }}</p>
+  <p><strong>College:</strong> {{ faculty.college }}</p>
+  <p><strong>Status:</strong> {{ faculty.status }}</p>
+  {% if faculty.status == 'Inactive' %}
+    <p><strong>Remarks:</strong> {{ faculty.remarks }}</p>
+  {% endif %}
+
+  {% if user.get_access_level == 'Administrator' %}
+  	<a href="{% url 'admin-update-faculty' faculty.id %}" class="buttons">Update Faculty Details</a>
+    <a href="{% url 'delete-faculty' faculty.id %}" class="buttons">Delete this Faculty Member</a>
+  {% else %}
+  	<a href="{% url 'update-faculty' faculty.id %}" class="buttons">Update Faculty Details</a>
+  {% endif %}
+{% endblock %}

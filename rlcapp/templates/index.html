@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Home</h1>
+  <p>Your RLC Applications:</p>
+  <ul>
+   	{% for applications in rlc_applications %}
+   	<li>
+   		{{ applications }}
+   	</li>
+   	{% endfor %}
+  </ul>
+{% endblock %}

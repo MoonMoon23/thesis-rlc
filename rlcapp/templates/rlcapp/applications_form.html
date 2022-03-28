@@ -1,0 +1,37 @@
+{% extends "base_generic.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+	<h1>Application Form</h1>
+  	<form action="" method="post">
+	    {% csrf_token %}
+	    <div class="form-row">
+	    	<div class="form-group col-md-3 mb-2">
+	   		{{form.applicant|as_crispy_field}}
+	   		</div>
+	   	</div>
+	   	<div class="form-row">
+    		<div class="form-group col-md-7 mb-2">
+	    		{{form.units|as_crispy_field}}
+	    	</div>
+	    </div>
+	    <div class="form-row">
+	    	<div class="form-group col-md-5 mb-3">
+	    		{{form.semester_applicable|as_crispy_field}}
+	    	</div>
+	    	<div class="form-group col-md-3 mb-3">
+	    		{{form.schoolyear|as_crispy_field}}
+	    	</div>
+	    </div>
+	    <div class="form-row">
+	    	<div class="form-group col-md-3 mb-3">
+	    		{{form.associated_department|as_crispy_field}}
+	    	</div>
+	    	<div class="form-group col-md-3 mb-3">
+	    		{{form.associated_college|as_crispy_field}}
+	    	</div>
+	    </div>
+	    <input type="submit" value="Submit" class="btn btn-primary">
+	</form>
+{% endblock %}

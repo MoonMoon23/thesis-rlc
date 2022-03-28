@@ -1,0 +1,40 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ projects.title }}</h1>
+  <p><strong>Original Name: </strong>{{ projects.original_name }}</p>
+  <p><strong>Date Started: </strong>{{ projects.date_started }}</p>
+  <p><strong>Date Completed: </strong>
+    {% if projects.date_completed == None %}
+      In Progress
+    {% else %}
+      {{ projects.date_completed }}
+    {% endif %}
+  </p>
+  <p><strong>Percent Complete: </strong>{{ projects.percent_completed }}%</p>
+  <p><strong>Members: </strong>{{ projects.authors.all|join:", " }}</p>
+
+  <div>
+    <h4>Progress Reports: </h4>
+
+      {% for reports in progress_reports %}
+      <hr>
+        <p>Report for: <a href="{{ reports.progress_report_file.url }}">{{ reports }}</a></p>
+        {% if reports.remarks != '' %}
+          <p><strong>Remarks: </strong> {{ reports.remarks }}</p>
+          
+            <li><a href="{% url 'add-remarks-progress-report' reports.id %}" class="buttons">Edit Remarks</a></li>
+          
+        {% else %}
+          
+            <li><a href="{% url 'add-remarks-progress-report' reports.id %} " class="buttons">Add Remarks</a></li>
+          
+        {% endif %}
+      {% endfor %}
+      <hr>
+  </div>
+
+  <li><a href="{% url 'edit-project' projects.id %}" class="buttons">Edit Project</a></li>
+  <li><a href="{% url 'add-progress-report' %}" class="buttons">Add Progress Report</a></li>  
+  
+{% endblock %}

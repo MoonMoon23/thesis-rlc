@@ -1,0 +1,104 @@
+{% extends "base_generic.html" %}
+
+{% load widget_tweaks %}
+{% load templatehelpers %}
+
+{% block content %}
+  {% if user.get_access_level == 'Administrator' %}
+    <h1 class=head>Faculty List</h1>
+      <form method="get">
+        <div class="filter">
+          <h4 style="margin-top: 0">Filter</h4>
+          <div class="row">
+            <!--<div class="form-group col-sm-4 col-md-2">
+              {{ filter.form.first_name.label_tag }}
+              {% render_field filter.form.first_name class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-2">
+              {{ filter.form.last_name.label_tag }}
+              {% render_field filter.form.last_name class="form-control" %}
+            </div>-->
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.faculty_id.label_tag }}
+              {% render_field filter.form.faculty_id class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.department.label_tag }}
+              {% render_field filter.form.department class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.college.label_tag }}
+              {% render_field filter.form.college class="form-control" %}
+            </div>
+            <!--<div class="form-group col-sm-4 col-md-2">
+              {{ filter.form.designation.label_tag }}
+              {% render_field filter.form.designation class="form-control" %}
+            </div>-->
+            <div class="form-group col-sm-4 col-md-2">
+              {{ filter.form.status.label_tag }}
+              {% render_field filter.form.status class="form-control" %}
+            </div>
+            <div class="form-group col-sm-4 col-md-3">
+              {{ filter.form.access_level.label_tag }}
+              {% render_field filter.form.access_level class="form-control" %}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Search
+          </button>
+        </div>
+      </form>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Faculty ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Department</th>
+          <th>College</th>
+          <th>Designation</th>
+          <th>Status</th>
+          <th>Access Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in page %}
+          <tr>
+            <td><a href="{{ member.get_absolute_url }}"> {{ member.faculty_id }}</a></td>
+            <td>{{ member.first_name }}</td>
+            <td>{{ member.last_name }}</td>
+            <td>{{ member.department }}</td>
+            <td>{{ member.college }}</td>
+            <td>{{ member.designation }} {{ member.rank }}</td>
+            <td>{{ member.status }}</td>
+            <td>{{ member.access_level }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No Entries.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="pagination">
+      <span class="step-links">
+          {% if page.has_previous %}
+              <a href="{% helpers 1 'page' request.GET.urlencode %}">&laquo; first</a>
+              <a href="{% helpers page.previous_page_number 'page' request.GET.urlencode %}">previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ page.number }} of {{ page.paginator.num_pages }}.
+          </span>
+
+          {% if page.has_next %}
+              <a href="{% helpers page.next_page_number 'page' request.GET.urlencode %}">next</a>
+              <a href="{% helpers page.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a>
+          {% endif %}
+      </span>
+    </div>
+    <a href="{% url 'add-faculty' %}" class="btn btn-primary" style="position: right">Add Faculty</a>
+  {% else %}
+    <p><strong>You don't have access to this page</strong></p>
+  {% endif %}
+{% endblock %}
