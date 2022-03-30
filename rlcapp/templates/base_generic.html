@@ -10,28 +10,24 @@
   <link rel="stylesheet" href="{% static 'styles.css' %}" type="text/css">
 </head>
 <body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="navbar">
-      {% block navbar %}
-          <p>Welcome, {{ user.get_name }}!</p>
-          <a href="{% url 'index' %}">Home</a>
-          <a href="{% url 'applications' %}">Applications</a>
-          <a href="{% url 'faculty-detail' %}">Your Profile</a>         
-          <a href="{% url 'logout'%}?next={{request.path}}">Logout</a>
-          {% if user.get_access_level == 'Administrator' %}
-            <p>Administrator Options:</p>
-            <a href="{% url 'admin-faculty' %}">Faculty Options</a>
-            <a href="{% url 'admin-applications' %}">RLC Options</a>
-          {% elif user.get_access_level == 'Approving Body' %}
-            <p>Approving Options:</p>
-            <a href="{% url 'check-pending-rlc' %}">Check Pending RLC</a>
-            <a href="{% url 'check-approved-rlc' %}">Check Approved RLC</a>
-          {% endif %}
-      {% endblock %}
-      </div>
-      <div class="body">{% block content %}{% endblock %}</div>
-    </div>
+  <div class="navbar">
+    {% block navbar %}
+      <p>Welcome, {{ user.get_name }}!</p>
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'applications' %}">Applications</a>
+      <a href="{% url 'faculty-detail' %}">Your Profile</a>         
+      <a href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+      {% if user.get_access_level == 'Administrator' %}
+        <p>Administrator Options:</p>
+        <a href="{% url 'admin-faculty' %}">Faculty Options</a>
+        <a href="{% url 'admin-applications' %}">RLC Options</a>
+      {% elif user.get_access_level == 'Approving Body - Department' or user.get_access_level == 'Approving Body - College'%}
+        <p>Approving Options:</p>
+        <a href="{% url 'check-pending-rlc' %}">Check Pending RLC</a>
+        <a href="{% url 'check-approved-rlc' %}">Check Approved RLC</a>
+      {% endif %}
+    {% endblock %}
   </div>
+  <div class="body">{% block content %}{% endblock %}</div>
 </body>
 </html>
