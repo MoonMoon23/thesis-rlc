@@ -13,6 +13,7 @@
   </p>
   <p><strong>Percent Complete: </strong>{{ projects.percent_completed }}%</p>
   <p><strong>Members: </strong>{{ projects.authors.all|join:", " }}</p>
+  <p><strong>Project File: <a href="{{ projects.project_file.url }}">{{ projects.project_file }}</a></strong></p>
 
   <div>
     <h4>Progress Reports: </h4>

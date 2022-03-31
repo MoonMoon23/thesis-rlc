@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Faculty, Office, Applications, Projects, Progress_Reports, Involvement
+from .models import Faculty, Office, Applications, Projects, Progress_Reports
 from django.views import generic
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import CreateView, UpdateView, DeleteView

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, GroupAdmin as BaseGroupAdmin
 from django.contrib.auth.models import Group
 from .forms import FacultyCreationForm, FacultyChangeForm
-from .models import Faculty, Office, Applications, Progress_Reports, Involvement, Projects
+from .models import Faculty, Office, Applications, Progress_Reports, Projects
 
 class GroupInline(admin.StackedInline):
     model = Faculty
@@ -42,5 +42,3 @@ admin.site.register(Faculty, FacultyAdmin)
 admin.site.register(Applications)
 admin.site.register(Progress_Reports)
 admin.site.register(Projects)
-admin.site.register(Involvement)
-

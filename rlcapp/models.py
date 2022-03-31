@@ -172,7 +172,7 @@ class Applications(models.Model):
 
 #application project class
 class Projects(models.Model):
-	application = models.ForeignKey('Applications', on_delete=models.PROTECT, null=True, blank=True, verbose_name="Associated Application")
+	application = models.ForeignKey('Applications', on_delete=models.CASCADE, null=True, blank=True, verbose_name="Associated Application")
 	title = models.CharField(max_length=500, verbose_name="Project Name", blank=True)
 	original_name = models.CharField(max_length=500, verbose_name="Original Name", blank=True)
 	date_started = models.DateField(default=now(), verbose_name="Date Started")
@@ -195,7 +195,7 @@ class Projects(models.Model):
 #RLC Progress Report class
 class Progress_Reports(models.Model):
 	date_submitted = models.DateField(default=now(), verbose_name="Date Submitted")
-	associated_project = models.ForeignKey('Projects', on_delete=models.PROTECT, verbose_name="Associated Project", default="", null=True, blank=True)
+	associated_project = models.ForeignKey('Projects', on_delete=models.CASCADE, verbose_name="Associated Project", default="", null=True, blank=True)
 	progress_report_file = models.FileField(upload_to='RLC Applications/Progress Reports', verbose_name="Progress Report")
 	remarks = models.TextField(default="", blank=True, verbose_name="Remarks")
 
@@ -214,15 +214,5 @@ class Progress_Reports(models.Model):
 	def get_absolute_url(self):
 		return reverse('project-detail',kwargs = {'pk' : self.associated_project_id})
 
-#involvement table
-class Involvement(models.Model):
-	project_id = models.ManyToManyField('Projects', default="", verbose_name="Project ID")
-	faculty_id = models.ManyToManyField('Faculty', default="", verbose_name="Faculty ID")
-	involvement = models.CharField(max_length=500, default="", verbose_name="Involvement")
 
-	class Meta:
-		verbose_name_plural = "Involvement"
-
-	def __str__(self):
-		return '{0} - {1} - {2}'.format(self.project_id, self.faculty_id, self.involvement)
 			

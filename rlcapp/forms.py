@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms import ModelForm
-from .models import Faculty, Office, Applications, Projects, Progress_Reports, Involvement
+from .models import Faculty, Office, Applications, Projects, Progress_Reports
 from django.contrib.auth.models import Group
 from django import forms
 
